@@ -1,4 +1,4 @@
-<header class="hero-unit" id="banner">
+<!-- <header class="hero-unit" id="banner">
   <div class="container">
     <h1>'Allo, 'Allo!</h1>
     <p class="lead">Kick-start your next web app with Angular Fullstack</p>
@@ -13,6 +13,33 @@
       <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="thing in $ctrl.awesomeThings">
         <li><a href="#" uib-tooltip="{{thing.info}}">{{thing.name}}</a></li>
       </ul>
+    </div>
+  </div>
+</div> -->
+
+<div class="container">
+
+  <ui-gmap-google-map control="vm.control" center="vm.map.center" zoom="vm.map.zoom">
+    <ui-gmap-marker idKey="m.id" coords="{latitude: m.coordinate[0], longitude: m.coordinate[1]}" ng-repeat="m in vm.rows">
+    </ui-gmap-marker>
+  </ui-gmap-google-map>
+
+  <p></p>
+
+  <div id="results" class="row list-group">
+    <div class="item col-xs-6 col-lg-4" ng-repeat="r in vm.rows">
+      <div class="thumbnail">
+        <img class="group list-group-image" src="{{r.image_urls[0]}}" alt="" />
+        <div class="caption">
+          <h4 class="group inner list-group-item-heading one-liner">{{r.name}}</h4>
+          <p class="group inner list-group-item-text one-liner"> {{r.location_name}}, {{r.location_city}} </p>
+          <p class="group inner list-group-item-text one-liner"> Rating: {{r.rating}}, {{r.review_count}} reviews </p>
+          <div class="row">
+            <div class="col-xs-12 col-md-6 one-liner"> <p class="lead"> ${{r.hour_price}} / hour</p> </div>
+            <div class="col-xs-12 col-md-6"> <a class="btn btn-primary" href="">Book</a> </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -4,35 +4,36 @@
 
   class MainController {
 
-    constructor($http) {
-      this.$http = $http;
-      this.awesomeThings = [];
-    }
+    constructor($http, uiGmapGoogleMapApi) {
+      var vm = this;
 
-    $onInit() {
-      this.$http.get('/api/things')
-        .then(response => {
-          this.awesomeThings = response.data;
+      vm.control = {};
+      vm.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
+      vm.rows = {};
+
+      $http.get('assets/results.json').success(function(data){
+        angular.extend(vm.rows, data.rows);
+
+        uiGmapGoogleMapApi.then(function(maps) {
+          var Gmap = vm.control.getGMap();
+
+          var ne = new google.maps.LatLng({lat: data.bounds.n, lng: data.bounds.e});
+          var sw = new google.maps.LatLng({lat: data.bounds.s, lng: data.bounds.w});
+          Gmap.fitBounds(new google.maps.LatLngBounds(sw, ne));
         });
-    }
+      }).error(function(error) {
+        console.log('error: ' + error);
+      });
 
-    addThing() {
-      if (this.newThing) {
-        this.$http.post('/api/things', {
-          name: this.newThing
-        });
-        this.newThing = '';
-      }
-    }
 
-    deleteThing(thing) {
-      this.$http.delete('/api/things/' + thing._id);
+
     }
   }
 
   angular.module('frontendExpertTestApp')
     .component('main', {
       templateUrl: 'app/main/main.html',
-      controller: MainController
+      controller: MainController,
+      controllerAs: 'vm',
     });
 })();
